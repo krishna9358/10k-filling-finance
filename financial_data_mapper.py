@@ -4,8 +4,6 @@ import os
 import re
 import json
 import logging
-from bs4 import BeautifulSoup
-from collections import defaultdict
 from datetime import datetime
 
 # Set up logging
@@ -29,7 +27,7 @@ INCOME_STATEMENT_ITEMS = [
 
 def extract_financial_data(file_path):
     """
-    Extract financial data from a SEC filing.
+    Extract financial data from a SEC filing using regex patterns.
     
     Args:
         file_path (str): Path to the SEC filing file
@@ -107,15 +105,15 @@ def extract_financial_data(file_path):
                 except Exception as e:
                     logger.error(f"Error processing {item}: {str(e)}")
         
-        # Extract any other financial data elements 
-        soup = BeautifulSoup(article_content, 'html.parser')
-        for tag in soup.find_all():
-            if tag.name and tag.name not in BALANCE_SHEET_ITEMS and tag.name not in INCOME_STATEMENT_ITEMS and tag.name != 'ARTICLE':
-                if tag.text.strip():
+        # Extract any other financial data elements using regex
+        # Instead of using BeautifulSoup, just look for other tags with regex
+        other_tags = re.findall(r'<([A-Z][A-Z0-9-]+)>(.*?)\n', article_content)
+        for tag, value in other_tags:
+            if tag not in BALANCE_SHEET_ITEMS and tag not in INCOME_STATEMENT_ITEMS and tag != 'ARTICLE':
+                value = value.strip()
+                if value:
                     try:
-                        key = tag.name.lower()
-                        value = tag.text.strip()
-                        
+                        key = tag.lower()
                         # Try to convert to number if possible
                         try:
                             if '.' in value:
@@ -125,7 +123,7 @@ def extract_financial_data(file_path):
                         except ValueError:
                             financial_data["other_financial_data"][key] = value
                     except Exception as e:
-                        logger.error(f"Error processing tag {tag.name}: {str(e)}")
+                        logger.error(f"Error processing tag {tag}: {str(e)}")
         
         return financial_data
     
@@ -153,19 +151,17 @@ def process_sec_filings(base_directory):
                 
                 # Extract the filing year from the directory structure
                 # Expected format: .../10-K/0000104169-YY-XXXXXX/full-submission.txt
-                match = re.search(r'/(\d{4})-(\d{6})/full-submission\.txt$', file_path)
+                match = re.search(r'(\d{4})-(\d{6})', os.path.dirname(file_path))
                 if match:
                     year = match.group(1)
                 else:
                     # Try alternative pattern
-                    match = re.search(r'(\d{4})(?=.*?/full-submission\.txt$)', file_path)
+                    match = re.search(r'(\d{4})', os.path.basename(os.path.dirname(file_path)))
                     if match:
                         year = match.group(1)
                     else:
-                        # Extract year from directory name as a fallback
-                        parent_dir = os.path.basename(os.path.dirname(file_path))
-                        year_match = re.search(r'(\d{4})', parent_dir)
-                        year = year_match.group(1) if year_match else "unknown"
+                        # Use a default
+                        year = "unknown"
                 
                 financial_data = extract_financial_data(file_path)
                 
@@ -259,7 +255,7 @@ def create_financial_summary_json(input_dir, output_file="financial_summary.json
 def main():
     """Main function to demonstrate usage"""
     # Specify the folder path containing SEC filings
-    sec_filings_path = "sec-edgar-filings/WMT/10-K/"
+    sec_filings_path = "sec-edgar-data/sec-edgar-filings/AAPL/10-K/"
     
     try:
         # Create detailed financial data JSON

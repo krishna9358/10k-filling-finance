@@ -7,6 +7,8 @@ requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.13.4",
     "lxml>=5.3.2",
+    "python-accounting>=1.0.1",
     "requests>=2.32.3",
     "sec-edgar-downloader>=5.0.3",
+    "urllib3>=2.4.0",
 ]
