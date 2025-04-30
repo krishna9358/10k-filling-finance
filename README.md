@@ -2,12 +2,11 @@
 
 This project extracts and analyzes financial data from SEC filings. The workflow includes:
 
-1. `data_extraction.py` - Downloads 10-K filing data from the SEC EDGAR database
-2. `financial_data_mapper.py` - Parses the data into structured JSON format
-3. `standarize_mapping.py` - Normalizes financial data with standardized account mapping 
-4. `validation.py` - Validates standardized data against raw data
-5. `ratio_computation.py` - Calculates financial ratios from standardized data
-6. `main.py` - Main entry point that orchestrates all the above steps
+1. `financial_data_mapper.py` - Parses the data into structured JSON format
+2. `standarize_mapping.py` - Normalizes financial data with standardized account mapping 
+3. `validation.py` - Validates standardized data against raw data
+4. `ratio_computation.py` - Calculates financial ratios from standardized data
+5. `main.py` - Main entry point that orchestrates all the above steps
 
 ## Usage
 
