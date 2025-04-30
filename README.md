@@ -8,6 +8,9 @@ This project extracts and analyzes financial data from SEC filings. The workflow
 4. `ratio_computation.py` - Calculates financial ratios from standardized data
 5. `main.py` - Main entry point that orchestrates all the above steps
 
+## Installtion of requirements
+` uv sync `
+
 ## Usage
 
 The `main.py` script serves as a single point of contact, orchestrating the entire workflow:
