@@ -1,0 +1,24 @@
+Standardized Financial Data:
+
+Year: 0000 (Period ending: JAN-31-1995)
+{'accounts_receivable': 700,
+ 'accumulated_depreciation': 2782,
+ 'additional_paid_in_capital': 12496,
+ 'cash_and_equivalents': 45,
+ 'common_stock': 230,
+ 'cost_of_goods_sold': 65586,
+ 'current_assets': 15338,
+ 'current_liabilities': 9973,
+ 'earnings_per_share_diluted': 1.17,
+ 'income_before_tax': 4262,
+ 'income_tax_expense': 1581,
+ 'interest_expense': 706,
+ 'inventory': 14064,
+ 'marketable_securities': 0,
+ 'net_income': 2681,
+ 'property_plant_equipment': 17090,
+ 'revenue': 82496,
+ 'total_assets': 32819,
+ 'total_expenses': 79150,
+ 'total_liabilities_and_equity': 32819,
+ 'total_revenue': 83412}

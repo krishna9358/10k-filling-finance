@@ -255,7 +255,7 @@ def create_financial_summary_json(input_dir, output_file="financial_summary.json
 def main():
     """Main function to demonstrate usage"""
     # Specify the folder path containing SEC filings
-    sec_filings_path = "sec-edgar-data/sec-edgar-filings/AAPL/10-K/"
+    sec_filings_path = "sec-edgar-filings/WMT/10-K/"
     
     try:
         # Create detailed financial data JSON

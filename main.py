@@ -57,11 +57,11 @@ def download_filings(ticker, email):
     try:
         dl = Downloader("sec-edgar-filings", email)
         dl.get("10-K", ticker)
-        return os.path.join("sec-edgar-filings", "10-K", ticker)
+        return os.path.join("sec-edgar-filings", ticker,  "10-K")
     except Exception as e:
         logger.error(f"Error downloading SEC filings: {str(e)}")
         # Create directory structure if it doesn't exist
-        dir_path = os.path.join("sec-edgar-filings", "10-K", ticker)
+        dir_path = os.path.join("sec-edgar-filings",  ticker, "10-K")
         os.makedirs(dir_path, exist_ok=True)
         return dir_path
 
@@ -72,8 +72,12 @@ def process_filings(input_dir, ticker):
     financial_summary_path = "financial_summary.json"
     
     try:
+        # Get the SEC filings directory path
+        sec_filings_path = os.path.join("sec-edgar-filings", ticker, "10-K")
+        logger.info(f"Processing SEC filings from {sec_filings_path}")
+        
         # Create financial data JSON
-        success = create_financial_json(input_dir, financial_data_path)
+        success = create_financial_json(sec_filings_path, financial_data_path)
         
         if not success or not os.path.exists(financial_data_path) or os.path.getsize(financial_data_path) < 10:
             logger.warning("Financial data extraction failed or produced empty file. Using sample data.")
@@ -82,7 +86,7 @@ def process_filings(input_dir, ticker):
             logger.info(f"Sample financial data written to {financial_data_path}")
         
         # Create financial summary JSON
-        create_financial_summary_json(input_dir, financial_summary_path)
+        create_financial_summary_json(sec_filings_path, financial_summary_path)
         if not os.path.exists(financial_summary_path) or os.path.getsize(financial_summary_path) < 10:
             logger.warning("Financial summary creation failed. Creating a basic summary from sample data.")
             summary_data = {ticker: {"latest": SAMPLE_FINANCIAL_DATA["2023"][0]}}
@@ -236,7 +240,7 @@ def main():
     
     try:
         # Step 1: Download SEC filings
-        input_dir = os.path.join("sec-edgar-filings", "10-K", ticker)
+        input_dir = os.path.join("sec-edgar-filings", ticker, "10-K")
         if args.use_sample_data:
             logger.info("Using sample data instead of downloading")
             os.makedirs(input_dir, exist_ok=True)

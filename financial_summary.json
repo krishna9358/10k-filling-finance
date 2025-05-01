@@ -1,0 +1,14 @@
+{
+  "0000": {
+    "period_end": "JAN-31-1995",
+    "key_metrics": {
+      "revenue": "83,412",
+      "net_income": "2,681",
+      "eps_basic": 1.17,
+      "total_assets": "32,819",
+      "total_liabilities_equity": "32,819",
+      "cash": 45,
+      "inventory": "14,064"
+    }
+  }
+}
